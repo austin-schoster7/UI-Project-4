@@ -17,8 +17,9 @@
   
     // Food resource locations
     const resources = [
-      { name: 'Local Food Bank', position: { lat: 37.7749, lng: -122.4194 } },
-      { name: 'Community Kitchen', position: { lat: 37.7849, lng: -122.4094 } },
+      { name: 'Local Food Bank', position: { lat: 37.7749, lng: -122.4194 }, status: 'Open' },
+      { name: 'Community Kitchen', position: { lat: 37.7849, lng: -122.4094 }, status: 'Limited Stock' },
+      { name: 'Homeless Shelter', position: { lat: 37.7949, lng: -122.4294 }, status: 'Closed' },
     ];
   
     // Initialize Google Map
