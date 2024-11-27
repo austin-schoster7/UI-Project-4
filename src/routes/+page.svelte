@@ -1,50 +1,98 @@
 <script>
-    import Map from '$lib/components/Map.svelte';
-    import SearchBar from '$lib/components/SearchBar.svelte';
-    import ResourceCard from '$lib/components/ResourceCard.svelte';
-    import Header from '$lib/components/Header.svelte';
-    import Footer from '$lib/components/Footer.svelte';
-  
-    let showFilterModal = false;
-  
-    let resources = [
-      { name: "Local Food Bank", address: "123 Main St, Anytown", status: "Open" },
-      { name: "Community Kitchen", address: "456 Elm St, Anytown", status: "Limited Stock" },
-      { name: "Homeless Shelter", address: "789 Oak Ave, Anytown", status: "Closed" }
-    ];
-  
-    let filteredResources = [...resources];
-    let filter = {
-      status: '',
-      name: ''
-    };
-  
-    // Search resources by name or address
-    const searchResources = (query) => {
-      filteredResources = resources.filter((r) =>
-        r.name.toLowerCase().includes(query.toLowerCase()) ||
-        r.address.toLowerCase().includes(query.toLowerCase())
-      );
-    };
-  
-    // Apply filters based on status and name
-    const filterResources = () => {
-      const statusFilter = filter.status.toLowerCase();
-      const nameFilter = filter.name.toLowerCase();
-  
-      filteredResources = resources.filter((r) => {
-        const matchesStatus = statusFilter ? r.status.toLowerCase().includes(statusFilter) : true;
-        const matchesName = nameFilter ? r.name.toLowerCase().includes(nameFilter) : true;
-        return matchesStatus && matchesName;
-      });
-    };
-  
-    // Remove a specific filter (status or name) and reapply filters
-    const removeFilter = (type) => {
-      filter[type] = ''; // Clear the specific filter
-      filterResources(); // Reapply filters
-    };
-  </script>
+  import Map from '$lib/components/Map.svelte';
+  import SearchBar from '$lib/components/SearchBar.svelte';
+  import ResourceCard from '$lib/components/ResourceCard.svelte';
+  import Header from '$lib/components/Header.svelte';
+  import Footer from '$lib/components/Footer.svelte';
+
+  import { onMount } from 'svelte';
+
+  let showFilterModal = false;
+
+  let resources = [
+    {
+      name: "Local Food Bank",
+      address: "123 Main St, Anytown",
+      status: "Open",
+      location: { lat: 37.7749, lng: -122.4194 },
+    },
+    {
+      name: "Community Kitchen",
+      address: "456 Elm St, Anytown",
+      status: "Limited Stock",
+      location: { lat: 37.7849, lng: -122.4094 },
+    },
+    {
+      name: "Homeless Shelter",
+      address: "789 Oak Ave, Anytown",
+      status: "Closed",
+      location: { lat: 37.7649, lng: -122.4294 },
+    },
+  ];
+
+  let filteredResources = [...resources];
+  let filter = { status: '', name: '' };
+  let mapRef;
+
+  const searchResources = (query) => {
+    filteredResources = resources.filter((r) =>
+      r.name.toLowerCase().includes(query.toLowerCase()) ||
+      r.address.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if (mapRef && mapRef.setResourceMarkers) {
+      mapRef.setResourceMarkers(filteredResources.map(r => ({
+        name: r.name,
+        position: r.location,
+        status: r.status,
+      })));
+    }
+  };
+
+  const filterResources = () => {
+    const statusFilter = filter.status.toLowerCase();
+    const nameFilter = filter.name.toLowerCase();
+
+    filteredResources = resources.filter((r) => {
+      const matchesStatus = statusFilter ? r.status.toLowerCase().includes(statusFilter) : true;
+      const matchesName = nameFilter ? r.name.toLowerCase().includes(nameFilter) : true;
+      return matchesStatus && matchesName;
+    });
+
+    if (mapRef && mapRef.setResourceMarkers) {
+      mapRef.setResourceMarkers(filteredResources.map(r => ({
+        name: r.name,
+        position: r.location,
+        status: r.status,
+      })));
+    }
+  };
+
+  const removeFilter = (type) => {
+    filter[type] = '';
+    filterResources();
+  };
+
+  // Center the map on the selected resource
+  const onCenterMap = (location) => {
+    console.log('Centering map on:', location);
+    if (mapRef && mapRef.centerOnLocation) {
+      mapRef.centerOnLocation(location);
+    }
+  };
+
+  const onGetDirections = (resource) => {
+    const { lat, lng } = resource.location;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    window.open(url, '_blank');
+  };
+
+  const onDonate = (resource) => {
+    alert(`Thank you for considering a donation to ${resource.name}!`);
+  };
+
+</script>
+
   
   <style>
     .filter-modal {
@@ -181,14 +229,19 @@
   {/if}
   
   <div style="height: 100%; width: 100%; display: block;">
-    <Map />
+    <Map bind:this={mapRef} />
   </div>
   
   <h2>Nearby Food Resources</h2>
   
   <div>
     {#each filteredResources as resource}
-      <ResourceCard {resource} />
+      <ResourceCard
+        {resource}
+        onCenterMap={() => onCenterMap(resource.location)}
+        onGetDirections={onGetDirections}
+        onDonate={onDonate}
+      />
     {/each}
   </div>
   
