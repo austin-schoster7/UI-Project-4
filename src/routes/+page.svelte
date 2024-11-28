@@ -6,6 +6,7 @@
   import Footer from '$lib/components/Footer.svelte';
 
   import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
 
   let showFilterModal = false;
 
@@ -75,7 +76,6 @@
 
   // Center the map on the selected resource
   const onCenterMap = (location) => {
-    console.log('Centering map on:', location);
     if (mapRef && mapRef.centerOnLocation) {
       mapRef.centerOnLocation(location);
     }
@@ -88,8 +88,9 @@
   };
 
   const onDonate = (resource) => {
-    alert(`Thank you for considering a donation to ${resource.name}!`);
+    goto(`/donate/?resourceName=${encodeURIComponent(resource.name)}&address=${resource.address}&lat=${resource.location.lat}&lng=${resource.location.lng}`);
   };
+
 
 </script>
 

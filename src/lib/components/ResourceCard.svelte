@@ -13,6 +13,9 @@
 
 <style>
   .card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 12px;
@@ -26,6 +29,16 @@
   .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .pin-logo {
+    width: 50px;
+    height: 65px;
+    flex-shrink: 0; /* Prevents the logo from shrinking */
+  }
+
+  .content {
+    flex-grow: 1; /* Ensures content takes up the remaining space */
   }
 
   .buttons {
@@ -80,17 +93,23 @@
 </style>
 
 <div class="card" on:click={() => onCenterMap(resource.location)}>
-  <h3>{resource.name}</h3>
-  <p>{resource.address}</p>
-  <p class="status {resource.status.toLowerCase().replace(' ', '-')}">
-    Status: {resource.status}
-  </p>
-  <div class="buttons">
-    <button class="directions-button" on:click={(e) => { e.stopPropagation(); onGetDirections(resource); }}>
-      Get Directions
-    </button>
-    <button class="donate-button" on:click={(e) => { e.stopPropagation(); onDonate(resource); }}>
-      Donate
-    </button>
+  <!-- Pin Logo -->
+  <img class="pin-logo" src="/pin-transparent.png" alt="Location Pin" />
+  
+  <!-- Resource Content -->
+  <div class="content">
+    <h3>{resource.name}</h3>
+    <p>{resource.address}</p>
+    <p class="status {resource.status.toLowerCase().replace(' ', '-')}">
+      Status: {resource.status}
+    </p>
+    <div class="buttons">
+      <button class="directions-button" on:click={(e) => { e.stopPropagation(); onGetDirections(resource); }}>
+        Get Directions
+      </button>
+      <button class="donate-button" on:click={(e) => { e.stopPropagation(); onDonate(resource); }}>
+        Donate
+      </button>
+    </div>
   </div>
 </div>

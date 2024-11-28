@@ -109,7 +109,6 @@
 
   // Exported function to center the map on a specific location
   export function centerOnLocation(location) {
-    console.log('Centering on location:', location);
     if (map && location) {
       map.setCenter(location);
       map.setZoom(15); // Zoom closer to the location
