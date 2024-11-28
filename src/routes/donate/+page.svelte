@@ -98,7 +98,6 @@
     button {
       background-color: #6AB04C;
       color: white;
-      font-weight: bold;
       cursor: pointer;
       border: none;
     }
@@ -116,7 +115,6 @@
     .directions-button {
       background-color: #f0932b; /* Orange for Get Directions */
       color: white;
-      font-weight: bold;
       cursor: pointer;
       border: none;
       padding: 0.75rem;

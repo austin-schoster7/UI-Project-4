@@ -56,21 +56,21 @@
     font-family: 'Poppins', sans-serif;
   }
 
-  .directions-button {
+  .donate-button {
     background: #6ab04c; /* Green for directions */
     color: white;
   }
 
-  .directions-button:hover {
+  .donate-button:hover {
     background: #4e9b3b;
   }
 
-  .donate-button {
+  .directions-button {
     background: #f0932b; /* Orange for donations */
     color: white;
   }
 
-  .donate-button:hover {
+  .directions-button:hover {
     background: #d87c25;
   }
 
@@ -104,11 +104,11 @@
       Status: {resource.status}
     </p>
     <div class="buttons">
-      <button class="directions-button" on:click={(e) => { e.stopPropagation(); onGetDirections(resource); }}>
-        Get Directions
-      </button>
       <button class="donate-button" on:click={(e) => { e.stopPropagation(); onDonate(resource); }}>
         Donate
+      </button>
+      <button class="directions-button" on:click={(e) => { e.stopPropagation(); onGetDirections(resource); }}>
+        Get Directions
       </button>
     </div>
   </div>
