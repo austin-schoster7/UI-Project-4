@@ -84,7 +84,8 @@
   
     .required {
       color: red;
-      font-weight: bold;
+      font-weight: normal;
+      padding-left: 2px;
     }
   
     input,
@@ -93,6 +94,16 @@
       border-radius: 8px;
       border: 1px solid #ddd;
       font-family: 'Poppins', sans-serif;
+    }
+
+    input {
+      border-color: #6AB04C;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #f0932b; /* Orange accent */
+      /* border-width: 3px; */
     }
   
     button {
