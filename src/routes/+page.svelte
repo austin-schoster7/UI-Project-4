@@ -16,23 +16,26 @@
       address: "123 Main St, Anytown",
       status: "Open",
       location: { lat: 37.7749, lng: -122.4194 },
+      services: ["Canned Goods", "Clothing"],
     },
     {
       name: "Community Kitchen",
       address: "456 Elm St, Anytown",
       status: "Limited Stock",
       location: { lat: 37.7849, lng: -122.4094 },
+      services: ["Warm Meals", "Canned Goods"],
     },
     {
       name: "Homeless Shelter",
       address: "789 Oak Ave, Anytown",
       status: "Closed",
       location: { lat: 37.7649, lng: -122.4294 },
+      services: ["Shelter", "Medical Aid", "Warm Meals"],
     },
   ];
 
   let filteredResources = [...resources];
-  let filter = { status: '', name: '' };
+  let filter = { status: '', name: '', service: '' };
   let mapRef;
 
   const searchResources = (query) => {
@@ -53,11 +56,13 @@
   const filterResources = () => {
     const statusFilter = filter.status.toLowerCase();
     const nameFilter = filter.name.toLowerCase();
+    const serviceFilter = filter.service;
 
     filteredResources = resources.filter((r) => {
       const matchesStatus = statusFilter ? r.status.toLowerCase().includes(statusFilter) : true;
       const matchesName = nameFilter ? r.name.toLowerCase().includes(nameFilter) : true;
-      return matchesStatus && matchesName;
+      const matchesService = serviceFilter ? r.services.includes(serviceFilter) : true;
+      return matchesStatus && matchesName && matchesService;
     });
 
     if (mapRef && mapRef.setResourceMarkers) {
@@ -190,7 +195,7 @@
   />
   
   <!-- Active Filters Section -->
-  {#if filter.status || filter.name}
+  {#if filter.status || filter.name || filter.service}
     <div class="active-filters">
       {#if filter.status}
         <span class="filter-tag">
@@ -204,8 +209,15 @@
           <button on:click={() => removeFilter('name')}>✖</button>
         </span>
       {/if}
+      {#if filter.service}
+        <span class="filter-tag">
+          Service: {filter.service}
+          <button on:click={() => removeFilter('service')}>✖</button>
+        </span>
+      {/if}
     </div>
   {/if}
+
   
   <!-- Filter Modal -->
   {#if showFilterModal}
@@ -219,15 +231,28 @@
           <option value="Closed">Closed</option>
         </select>
       </label>
-  
+
+      <label>
+        Filter by Service:
+        <select bind:value={filter.service}>
+          <option value="">All</option>
+          <option value="Canned Goods">Canned Goods</option>
+          <option value="Warm Meals">Warm Meals</option>
+          <option value="Shelter">Shelter</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Medical Aid">Medical Aid</option>
+        </select>
+      </label>
+
       <label>
         Filter by Name:
         <input type="text" bind:value={filter.name} placeholder="Enter name..." />
       </label>
-  
+
       <button on:click={() => { filterResources(); showFilterModal = false; }}>Apply Filter</button>
     </div>
   {/if}
+
   
   <div style="height: 100%; width: 100%; display: block;">
     <Map bind:this={mapRef} />

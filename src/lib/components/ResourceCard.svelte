@@ -2,6 +2,7 @@
   export let resource = {
     name: 'Resource Name',
     address: '123 Main Street',
+    services: ['Service 1', 'Service 2', 'Service 3'],
     status: 'Open',
     location: { lat: 0, lng: 0 }, // Latitude and Longitude of the resource
   };
@@ -90,6 +91,22 @@
   .status.closed {
     color: #EB4D4B; /* Red for "Closed" */
   }
+
+  .services {
+    margin-top: 1rem;
+    text-align: left;
+  }
+
+  .services ul {
+    list-style-type: disc;
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+
+  .services li {
+    font-size: 0.9rem;
+    color: #555;
+  }
 </style>
 
 <div class="card" on:click={() => onCenterMap(resource.location)}>
@@ -100,6 +117,14 @@
   <div class="content">
     <h3>{resource.name}</h3>
     <p>{resource.address}</p>
+    <div class="services">
+      <p>Available Services:</p>
+      <ul>
+        {#each resource.services as service}
+          <li>{service}</li>
+        {/each}
+      </ul>
+    </div>
     <p class="status {resource.status.toLowerCase().replace(' ', '-')}">
       Status: {resource.status}
     </p>
