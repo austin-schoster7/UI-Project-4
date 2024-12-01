@@ -64,6 +64,6 @@
   <nav class="nav">
     <a href="/">Home</a>
     <a href="#resources">Resources</a>
-    <a href="#about">About</a>
+    <a href="/about">About</a>
   </nav>
 </header>
