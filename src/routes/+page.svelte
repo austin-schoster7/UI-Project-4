@@ -13,23 +13,23 @@
   let resources = [
     {
       name: "Local Food Bank",
-      address: "123 Main St, Anytown",
+      address: "123 Main St, Cincinnati, OH",
       status: "Open",
-      location: { lat: 37.7749, lng: -122.4194 },
+      location: { lat: 39.1031, lng: -84.5120 },
       services: ["Canned Goods", "Clothing"],
     },
     {
       name: "Community Kitchen",
-      address: "456 Elm St, Anytown",
+      address: "456 Elm St, Cincinnati, OH",
       status: "Limited Stock",
-      location: { lat: 37.7849, lng: -122.4094 },
+      location: { lat: 39.1095, lng: -84.5207 },
       services: ["Warm Meals", "Canned Goods"],
     },
     {
       name: "Homeless Shelter",
-      address: "789 Oak Ave, Anytown",
+      address: "789 Oak Ave, Cincinnati, OH",
       status: "Closed",
-      location: { lat: 37.7649, lng: -122.4294 },
+      location: { lat: 39.1115, lng: -84.5165 },
       services: ["Shelter", "Medical Aid", "Warm Meals"],
     },
   ];

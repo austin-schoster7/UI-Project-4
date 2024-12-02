@@ -17,9 +17,27 @@
 
   // Food resource locations
   const resources = [
-    { name: 'Local Food Bank', position: { lat: 37.7749, lng: -122.4194 }, status: 'Open' },
-    { name: 'Community Kitchen', position: { lat: 37.7849, lng: -122.4094 }, status: 'Limited Stock' },
-    { name: 'Homeless Shelter', position: { lat: 37.7949, lng: -122.4294 }, status: 'Closed' },
+    {
+      name: "Local Food Bank",
+      address: "123 Main St, Cincinnati, OH",
+      status: "Open",
+      location: { lat: 39.1031, lng: -84.5120 },
+      services: ["Canned Goods", "Clothing"],
+    },
+    {
+      name: "Community Kitchen",
+      address: "456 Elm St, Cincinnati, OH",
+      status: "Limited Stock",
+      location: { lat: 39.1095, lng: -84.5207 },
+      services: ["Warm Meals", "Canned Goods"],
+    },
+    {
+      name: "Homeless Shelter",
+      address: "789 Oak Ave, Cincinnati, OH",
+      status: "Closed",
+      location: { lat: 39.1115, lng: -84.5165 },
+      services: ["Shelter", "Medical Aid", "Warm Meals"],
+    },
   ];
 
   const initMap = (userLocation) => {
@@ -35,10 +53,11 @@
     // Add markers for resources
     resources.forEach((resource) => {
       const marker = new google.maps.Marker({
-        position: resource.position,
+        position: resource.location,
         map,
         title: resource.name,
       });
+      console.log(`Added marker for: ${resource.name}`);
 
       // Add a click listener to the marker
       marker.addListener('click', () => {
