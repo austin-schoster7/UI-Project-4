@@ -1,5 +1,17 @@
 <script>
+  import { page } from '$app/stores';
   export let title = 'FoodMap'; // Default title
+
+  // Scroll to the resource cards section
+  const scrollToResources = () => {
+    const resourceSection = document.getElementById('resource-cards');
+    if (resourceSection) {
+      resourceSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Reactive variable to check if the current route is the home page
+  $: isHomePage = $page.url.pathname === '/';
 </script>
 
 <style>
@@ -63,7 +75,9 @@
   </div>
   <nav class="nav">
     <a href="/">Home</a>
-    <a href="#resources">Resources</a>
+    {#if isHomePage}
+      <a href="javascript:void(0);" on:click={scrollToResources}>Resources</a>
+    {/if}
     <a href="/about">About</a>
   </nav>
 </header>

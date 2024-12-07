@@ -265,7 +265,7 @@
 
 <h2>Nearby Food Resources</h2>
 
-<div>
+<div id="resource-cards">
   {#each filteredResources as resource}
     <ResourceCard
       {resource}
