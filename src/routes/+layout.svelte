@@ -1,14 +1,14 @@
 <script>
-    // Add any layout-level logic here (if needed)
-  </script>
+    
+</script>
   
-  <main>
-    <slot />
-  </main>
+<main>
+  <slot />
+</main>
   
-  <style>
-    main {
-      padding: 1rem;
-    }
-  </style>
+<style>
+  main {
+    padding: 1rem;
+  }
+</style>
   

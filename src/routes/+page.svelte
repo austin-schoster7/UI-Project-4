@@ -10,6 +10,7 @@
 
   let showFilterModal = false;
 
+  // Sample food resources
   let resources = [
     {
       name: "Local Food Bank",
@@ -54,6 +55,7 @@
     }
   };
 
+  // Filter resources based on the selected filters
   const filterResources = () => {
     const statusFilter = filter.status.toLowerCase();
     const nameFilter = filter.name.toLowerCase();
@@ -75,6 +77,7 @@
     }
   };
 
+  // Remove a filter
   const removeFilter = (type) => {
     filter[type] = '';
     filterResources();
@@ -92,12 +95,14 @@
     }
   };
 
+  // Open Google Maps with directions to the resource
   const onGetDirections = (resource) => {
     const { lat, lng } = resource.location;
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
     window.open(url, '_blank');
   };
 
+  // Redirect to the donation page
   const onDonate = (resource) => {
     goto(`/donate/?resourceName=${encodeURIComponent(resource.name)}&address=${resource.address}&lat=${resource.location.lat}&lng=${resource.location.lng}`);
   };
