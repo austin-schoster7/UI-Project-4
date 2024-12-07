@@ -1,6 +1,9 @@
 <script>
   import { onMount } from 'svelte';
 
+  // Load the API key from the environment variable
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
   let map;
 
   // Custom map styles
@@ -57,7 +60,6 @@
         map,
         title: resource.name,
       });
-      console.log(`Added marker for: ${resource.name}`);
 
       // Add a click listener to the marker
       marker.addListener('click', () => {
@@ -91,7 +93,7 @@
           if (!window.google) {
             // Dynamically load the Google Maps script
             const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCaKhk4wwQojO33N-MCBmK9lByi968scTM&callback=initMap`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
             script.defer = true;
             script.async = true;
             document.head.appendChild(script);
@@ -115,7 +117,7 @@
   const initFallbackMap = () => {
     if (!window.google) {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCaKhk4wwQojO33N-MCBmK9lByi968scTM&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
       script.defer = true;
       script.async = true;
       document.head.appendChild(script);

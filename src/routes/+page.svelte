@@ -37,6 +37,7 @@
   let filteredResources = [...resources];
   let filter = { status: '', name: '', service: '' };
   let mapRef;
+  let mapElement;
 
   const searchResources = (query) => {
     filteredResources = resources.filter((r) =>
@@ -84,6 +85,11 @@
     if (mapRef && mapRef.centerOnLocation) {
       mapRef.centerOnLocation(location);
     }
+
+    // Scroll to the map component
+    if (mapElement) {
+      mapElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const onGetDirections = (resource) => {
@@ -100,176 +106,175 @@
 </script>
 
   
-  <style>
-    .filter-modal {
-      position: absolute;
-      top: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 12px;
-      padding: 1.5rem;
-      z-index: 1000;
-      width: 300px;
-      font-family: 'Poppins', sans-serif;
-    }
+<style>
+  .filter-modal {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    z-index: 1000;
+    width: 300px;
+    font-family: 'Poppins', sans-serif;
+  }
   
-    .filter-modal label {
-      display: block;
-      margin: 0.5rem 0;
-    }
-  
-    .filter-modal button {
-      margin-top: 1rem;
-      background: #F0932B;
-      border: none;
-      color: white;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  
-    .filter-modal button:hover {
-      background: #D87C25;
-    }
-  
-    .filter-modal select {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    .filter-modal input {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    .active-filters {
-      display: flex;
-      gap: 1rem;
-      margin: 1rem 2rem;
-      font-family: 'Poppins', sans-serif;
-    }
-  
-    .filter-tag {
-      background: #f1f1f1;
-      border: 1px solid #ddd;
-      border-radius: 16px;
-      padding: 0.5rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-    }
-  
-    .filter-tag button {
-      background: none;
-      border: none;
-      color: #888;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-  
-    .filter-tag button:hover {
-      color: #d00; /* Red for hover effect */
-    }
-  
-    h2 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.5rem;
-      margin: 2rem 0 1rem;
-    }
-  </style>
-  
-  <Header title="FoodMap" />
-  
-  <SearchBar
-    onSearch={searchResources}
-    onFilter={() => showFilterModal = !showFilterModal}
-  />
-  
-  <!-- Active Filters Section -->
-  {#if filter.status || filter.name || filter.service}
-    <div class="active-filters">
-      {#if filter.status}
-        <span class="filter-tag">
-          Status: {filter.status}
-          <button on:click={() => removeFilter('status')}>✖</button>
-        </span>
-      {/if}
-      {#if filter.name}
-        <span class="filter-tag">
-          Name: {filter.name}
-          <button on:click={() => removeFilter('name')}>✖</button>
-        </span>
-      {/if}
-      {#if filter.service}
-        <span class="filter-tag">
-          Service: {filter.service}
-          <button on:click={() => removeFilter('service')}>✖</button>
-        </span>
-      {/if}
-    </div>
-  {/if}
+  .filter-modal label {
+    display: block;
+    margin: 0.5rem 0;
+  }
 
+  .filter-modal button {
+    margin-top: 1rem;
+    background: #F0932B;
+    border: none;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .filter-modal button:hover {
+    background: #D87C25;
+  }
+
+  .filter-modal select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .filter-modal input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .active-filters {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 2rem;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .filter-tag {
+    background: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .filter-tag button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .filter-tag button:hover {
+    color: #d00; /* Red for hover effect */
+  }
+
+  h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+  }
+</style>
   
-  <!-- Filter Modal -->
-  {#if showFilterModal}
-    <div class="filter-modal">
-      <label>
-        Filter by Status:
-        <select bind:value={filter.status}>
-          <option value="">All</option>
-          <option value="Open">Open</option>
-          <option value="Limited Stock">Limited Stock</option>
-          <option value="Closed">Closed</option>
-        </select>
-      </label>
-
-      <label>
-        Filter by Service:
-        <select bind:value={filter.service}>
-          <option value="">All</option>
-          <option value="Canned Goods">Canned Goods</option>
-          <option value="Warm Meals">Warm Meals</option>
-          <option value="Shelter">Shelter</option>
-          <option value="Clothing">Clothing</option>
-          <option value="Medical Aid">Medical Aid</option>
-        </select>
-      </label>
-
-      <label>
-        Filter by Name:
-        <input type="text" bind:value={filter.name} placeholder="Enter name..." />
-      </label>
-
-      <button on:click={() => { filterResources(); showFilterModal = false; }}>Apply Filter</button>
-    </div>
-  {/if}
-
+<Header title="FoodMap" />
   
-  <div style="height: 100%; width: 100%; display: block;">
-    <Map bind:this={mapRef} />
+<SearchBar
+  onSearch={searchResources}
+  onFilter={() => showFilterModal = !showFilterModal}
+/>
+  
+<!-- Active Filters Section -->
+{#if filter.status || filter.name || filter.service}
+  <div class="active-filters">
+    {#if filter.status}
+      <span class="filter-tag">
+        Status: {filter.status}
+        <button on:click={() => removeFilter('status')}>✖</button>
+      </span>
+    {/if}
+    {#if filter.name}
+      <span class="filter-tag">
+        Name: {filter.name}
+        <button on:click={() => removeFilter('name')}>✖</button>
+      </span>
+    {/if}
+    {#if filter.service}
+      <span class="filter-tag">
+        Service: {filter.service}
+        <button on:click={() => removeFilter('service')}>✖</button>
+      </span>
+    {/if}
   </div>
-  
-  <h2>Nearby Food Resources</h2>
-  
-  <div>
-    {#each filteredResources as resource}
-      <ResourceCard
-        {resource}
-        onCenterMap={() => onCenterMap(resource.location)}
-        onGetDirections={onGetDirections}
-        onDonate={onDonate}
-      />
-    {/each}
+{/if}
+
+
+<!-- Filter Modal -->
+{#if showFilterModal}
+  <div class="filter-modal">
+    <label>
+      Filter by Status:
+      <select bind:value={filter.status}>
+        <option value="">All</option>
+        <option value="Open">Open</option>
+        <option value="Limited Stock">Limited Stock</option>
+        <option value="Closed">Closed</option>
+      </select>
+    </label>
+
+    <label>
+      Filter by Service:
+      <select bind:value={filter.service}>
+        <option value="">All</option>
+        <option value="Canned Goods">Canned Goods</option>
+        <option value="Warm Meals">Warm Meals</option>
+        <option value="Shelter">Shelter</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Medical Aid">Medical Aid</option>
+      </select>
+    </label>
+
+    <label>
+      Filter by Name:
+      <input type="text" bind:value={filter.name} placeholder="Enter name..." />
+    </label>
+
+    <button on:click={() => { filterResources(); showFilterModal = false; }}>Apply Filter</button>
   </div>
-  
-  <Footer />
+{/if}
+
+<div style="height: 100%; width: 100%; display: block;" bind:this={mapElement}>
+  <Map bind:this={mapRef} />
+</div>
+
+<h2>Nearby Food Resources</h2>
+
+<div>
+  {#each filteredResources as resource}
+    <ResourceCard
+      {resource}
+      onCenterMap={() => onCenterMap(resource.location)}
+      onGetDirections={onGetDirections}
+      onDonate={onDonate}
+    />
+  {/each}
+</div>
+
+<Footer />
   
